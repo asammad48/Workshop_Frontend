@@ -18,7 +18,14 @@ export const useAuthStore = create<AuthState>((set) => ({
   accessToken: localStorage.getItem("accessToken"),
   user: (() => {
     const raw = localStorage.getItem("user");
-    return raw ? (JSON.parse(raw) as UserVm) : null;
+    if (!raw || raw === "undefined") return null;
+    try {
+      return JSON.parse(raw) as UserVm;
+    } catch (e) {
+      console.error("Failed to parse user from localStorage", e);
+      localStorage.removeItem("user");
+      return null;
+    }
   })(),
   setAuth: (token, user) => {
     localStorage.setItem("accessToken", token);
