@@ -8,9 +8,9 @@ import { NotFoundPage } from "../pages/NotFoundPage";
 export const routes = createRoutesFromElements(
   <>
     <Route path="/login" element={<LoginPage />} />
-    <Route path="/theme" element={<ThemePage />} />
     <Route element={<ProtectedRoute />}>
       <Route path="/" element={<DashboardPage />} />
+      <Route path="/theme" element={<ThemePage />} />
     </Route>
     <Route path="*" element={<NotFoundPage />} />
   </>

@@ -1,0 +1,23 @@
+:root {
+  /* Configurable Colors */
+  --c-primary: #3b82f6;
+  --c-secondary: #64748b;
+  --c-accent: #f59e0b;
+
+  /* Neutral Tokens */
+  --c-bg: #ffffff;
+  --c-card: #f8fafc;
+  --c-text: #0f172a;
+  --c-muted: #64748b;
+
+  /* Border and utility */
+  --c-border: #e2e8f0;
+}
+
+[data-theme='dark'] {
+  --c-bg: #0f172a;
+  --c-card: #1e293b;
+  --c-text: #f8fafc;
+  --c-muted: #94a3b8;
+  --c-border: #334155;
+}

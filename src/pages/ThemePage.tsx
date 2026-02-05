@@ -1,45 +1,105 @@
-import { Card } from "../components/ui/Card";
-import { Button } from "../components/ui/Button";
-import { Input } from "../components/ui/Input";
-import styles from "../components/ui/ui.module.css";
+import React from 'react';
+import { useThemeStore } from '../state/themeStore';
+import { Card } from '../components/ui/Card';
+import { Input } from '../components/ui/Input';
+import { Button } from '../components/ui/Button';
+import { toast } from '../components/ui/Toast';
 
-export const ThemePage = () => {
+export function ThemePage() {
+  const { primary, secondary, accent, setTheme, resetTheme } = useThemeStore();
+  
+  const [localTheme, setLocalTheme] = React.useState({
+    primary,
+    secondary,
+    accent
+  });
+
+  const handleSave = () => {
+    setTheme(localTheme);
+    toast.success('Theme saved successfully');
+  };
+
+  const handleReset = () => {
+    resetTheme();
+    const newTheme = useThemeStore.getState();
+    setLocalTheme({
+      primary: newTheme.primary,
+      secondary: newTheme.secondary,
+      accent: newTheme.accent
+    });
+    toast.info('Theme reset to defaults');
+  };
+
   return (
-    <div style={{ padding: "2rem", maxWidth: "800px", margin: "0 auto" }}>
-      <h1>Theme Showcase</h1>
+    <div className="page">
+      <Card title="Theme Settings">
+        <div className="stack">
+          <div className="stack">
+            <label>Primary Color</label>
+            <div className="row">
+              <Input 
+                type="color" 
+                value={localTheme.primary} 
+                onChange={(e) => setLocalTheme(prev => ({ ...prev, primary: e.target.value }))}
+                style={{ width: '50px', padding: '2px', height: '40px' }}
+              />
+              <Input 
+                type="text" 
+                value={localTheme.primary} 
+                onChange={(e) => setLocalTheme(prev => ({ ...prev, primary: e.target.value }))}
+              />
+            </div>
+          </div>
+
+          <div className="stack">
+            <label>Secondary Color</label>
+            <div className="row">
+              <Input 
+                type="color" 
+                value={localTheme.secondary} 
+                onChange={(e) => setLocalTheme(prev => ({ ...prev, secondary: e.target.value }))}
+                style={{ width: '50px', padding: '2px', height: '40px' }}
+              />
+              <Input 
+                type="text" 
+                value={localTheme.secondary} 
+                onChange={(e) => setLocalTheme(prev => ({ ...prev, secondary: e.target.value }))}
+              />
+            </div>
+          </div>
+
+          <div className="stack">
+            <label>Accent Color</label>
+            <div className="row">
+              <Input 
+                type="color" 
+                value={localTheme.accent} 
+                onChange={(e) => setLocalTheme(prev => ({ ...prev, accent: e.target.value }))}
+                style={{ width: '50px', padding: '2px', height: '40px' }}
+              />
+              <Input 
+                type="text" 
+                value={localTheme.accent} 
+                onChange={(e) => setLocalTheme(prev => ({ ...prev, accent: e.target.value }))}
+              />
+            </div>
+          </div>
+
+          <div className="row" style={{ marginTop: '12px' }}>
+            <Button onClick={handleSave} variant="primary">Save Theme</Button>
+            <Button onClick={handleReset} variant="secondary">Reset to Defaults</Button>
+          </div>
+        </div>
+      </Card>
       
-      <section style={{ marginBottom: "2rem" }}>
-        <h2>Cards</h2>
-        <Card title="Simple Card">
-          <p>This is a simple card component used throughout the application.</p>
-        </Card>
-      </section>
-
-      <section style={{ marginBottom: "2rem" }}>
-        <h2>Buttons</h2>
-        <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
-          <Button>Default Button</Button>
-          <Button variant="primary">Primary Button</Button>
-          <Button variant="secondary">Secondary Button</Button>
-          <Button variant="danger">Danger Button</Button>
+      <div style={{ marginTop: '20px' }}>
+        <h3>Preview</h3>
+        <div className="row">
+          <Button style={{ backgroundColor: 'var(--c-primary)', color: 'white', border: 'none' }}>Primary</Button>
+          <Button style={{ backgroundColor: 'var(--c-secondary)', color: 'white', border: 'none' }}>Secondary</Button>
+          <Button style={{ backgroundColor: 'var(--c-accent)', color: 'white', border: 'none' }}>Accent</Button>
         </div>
-      </section>
-
-      <section style={{ marginBottom: "2rem" }}>
-        <h2>Inputs</h2>
-        <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-          <Input label="Default Input" placeholder="Type something..." />
-          <Input label="Disabled Input" placeholder="I am disabled" disabled />
-        </div>
-      </section>
-
-      <section style={{ marginBottom: "2rem" }}>
-        <h2>Typography</h2>
-        <h1 className={styles.h1}>Heading 1</h1>
-        <h2 className={styles.h2}>Heading 2</h2>
-        <h3 className={styles.h3}>Heading 3</h3>
-        <p className={styles.p}>Body text. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-      </section>
+      </div>
     </div>
   );
-};
+}

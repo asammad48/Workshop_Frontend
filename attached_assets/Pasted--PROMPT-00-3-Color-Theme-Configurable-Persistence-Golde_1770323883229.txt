@@ -1,0 +1,70 @@
+# PROMPT 00 — 3-Color Theme (Configurable) + Persistence
+
+# Golden Rules (DO NOT BREAK)
+1) **Do not move/rename folders** in this repo. Only add files in the specified paths.
+2) Pages must stay thin: **no direct fetch in pages**. All network calls go via `src/api/repositories/*`.
+3) All popups use the existing hosts:
+   - Modal: `src/components/ui/Modal.tsx`
+   - Confirm: `src/components/ui/ConfirmDialog.tsx`
+   - Toast: `src/components/ui/Toast.tsx`
+4) Reuse UI primitives from `src/components/ui/*` (Button/Input/Card).
+5) Use role checks from `useAuthStore().user.role` for UI gating only; backend remains the source of truth.
+
+
+## Goal
+Make the website theme configurable with **3 colors**:
+- Primary
+- Secondary
+- Accent
+
+Must be:
+- stored in `localStorage`
+- applied globally using CSS variables
+- changeable from a simple "Theme" page
+
+## Create / Edit files
+
+### 1) Create: `src/styles/theme.css`
+Define CSS variables and default values:
+- `--c-primary`
+- `--c-secondary`
+- `--c-accent`
+Also define neutral tokens:
+- `--c-bg`
+- `--c-card`
+- `--c-text`
+- `--c-muted`
+
+### 2) Edit: `src/styles/global.css`
+- import `theme.css` at the top
+- update Button/Card/links to use CSS variables instead of hardcoded colors
+
+### 3) Create store: `src/state/themeStore.ts`
+State:
+- `primary`, `secondary`, `accent`
+- `setTheme({primary,secondary,accent})`
+- `loadTheme()` (reads localStorage)
+- `resetTheme()` (defaults)
+
+### 4) Hook theme into app start
+Edit: `src/main.tsx` or `src/app/AppShell.tsx`
+- call `useThemeStore.getState().loadTheme()` once at startup
+- apply variables to `document.documentElement.style.setProperty(...)`
+
+### 5) Create page: `src/pages/ThemePage.tsx`
+UI:
+- Card with 3 color inputs (type="color") + text inputs (hex)
+- Buttons: Save, Reset
+Reuse:
+- `Card`, `Input`, `Button`, `toast`
+
+### 6) Add route
+Edit: `src/app/routes.tsx`
+- add protected route `/theme` → `ThemePage`
+
+## Test after this prompt
+1) Open `/theme`
+2) Change primary color → Save
+3) Refresh page → colors must persist
+4) Reset → defaults restored
+5) Ensure buttons/cards/links reflect theme variables
