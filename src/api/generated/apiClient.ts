@@ -15,6 +15,13 @@ export class Client {
     constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
         this.http = http ? http : window as any;
         this.baseUrl = baseUrl ?? "";
+    protected transformOptions(options: RequestInit): Promise<RequestInit> {
+        return Promise.resolve(options);
+    }
+
+    protected transformResult(url: string, response: Response, processor: (response: Response) => any): Promise<any> {
+        return processor(response);
+    }
     }
 
     /**
