@@ -3,6 +3,7 @@ import { ProtectedRoute } from "./security/ProtectedRoute";
 import { LoginPage } from "../pages/auth/LoginPage";
 import { DashboardPage } from "../pages/DashboardPage";
 import { ThemePage } from "../pages/ThemePage";
+import { MePage } from "../pages/auth/MePage";
 import { NotFoundPage } from "../pages/NotFoundPage";
 
 export const routes = createRoutesFromElements(
@@ -11,6 +12,7 @@ export const routes = createRoutesFromElements(
     <Route element={<ProtectedRoute />}>
       <Route path="/" element={<DashboardPage />} />
       <Route path="/theme" element={<ThemePage />} />
+      <Route path="/me" element={<MePage />} />
     </Route>
     <Route path="*" element={<NotFoundPage />} />
   </>

@@ -1,22 +1,16 @@
 import { getBaseUrl, getFetch } from "../clientFactory";
+import { Client } from "../generated/apiClient";
 
-/**
- * Auth repository is written to NOT break if NSwag client is not generated yet.
- * Once NSwag is generated, replace the inline fetch with the generated AuthClient.
- */
-
-export type LoginRequest = { email: string; password: string };
-export type LoginResponse = { accessToken: string; user: { id: string; email: string; role?: string; branchId?: string | null } };
+const getClient = () => new Client(getBaseUrl(), { fetch: getFetch() });
 
 export const authRepo = {
-  async login(req: LoginRequest): Promise<LoginResponse> {
-    const baseUrl = getBaseUrl();
-    const f = getFetch();
-    const res = await f(`${baseUrl}/api/v1/auth/login`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(req)
-    });
-    return await res.json();
+  async login(req: any) {
+    return await getClient().login(req);
+  },
+  async me() {
+    return await getClient().me();
+  },
+  async changePassword(req: any) {
+    return await getClient().changePassword(req);
   }
 };
